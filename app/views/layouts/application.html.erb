@@ -12,8 +12,6 @@
 
   <body>
   	<% if signed_in? %>
-  <%= current_user.email %>
-  <%= button_to "Sign out", sign_out_path, method: :delete %>
 
 
   	<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
@@ -31,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a></li>
+            <%= link_to "Home", root_path, class: "nav-link" %></li>
             <li class="nav-item"><a class="nav-link" href="/answer">Answer</a></li>
             
             <form class="form-inline my-2 my-lg-0">
@@ -44,20 +42,19 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="nav-item"><a class="nav-link btn-danger" href="#" class="btn btn-danger add_question text-white" data-toggle="modal" data-target="#exampleModalCenter">Add Question</a></li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_user.first_name %> <%= current_user.last_name %>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Action</a>
                 <a class="dropdown-item" href="#">Another action</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/signout">Sign Out</a>
+                <%= link_to "Sign Out", sign_out_path, method: :delete, class: "dropdown-item" %>
               </div>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -93,6 +90,7 @@
 <% end %>
 
 		<div class="container">
+		<br/>
     	<%= yield %>
     </div>
 

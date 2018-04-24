@@ -44,6 +44,9 @@ gem 'figaro'
 # include bootstrap
 gem 'bootstrap'
 
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

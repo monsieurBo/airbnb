@@ -1,4 +1,5 @@
-<div id="clearance" class="sign-up">
+<div id="clearance" class="sign-up jumbotron">
+  <div class="container">
   <h2><%= t(".title") %></h2>
 
   <%= form_for @user do |form| %>
@@ -20,6 +21,8 @@
 
     <div class="other-links">
       <%= link_to t(".sign_in"), sign_in_path %>
+      <%= link_to 'Forget password', new_password_path %>
     </div>
   <% end %>
+  </div>
 </div>

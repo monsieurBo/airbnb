@@ -1,0 +1,11 @@
+<div id="clearance" class="sign-in jumbotron">
+<div class="container">
+  <h2 class="display-4 text-center">Welcome To PairBnB!</h2>
+  <br/>
+  <p class="lead"><%= t(".title") %></p>
+
+  <%= render partial: '/sessions/form' %>
+  </div>
+  <%= link_to "Sign in with Google", "/auth/google_oauth2" %>
+
+</div>
