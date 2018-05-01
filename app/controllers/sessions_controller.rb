@@ -41,7 +41,6 @@ class SessionsController < Clearance::UsersController
   end
 
   def create_from_omniauth
-    byebug
     auth_hash = request.env["omniauth.auth"]
     authentication = Authentication.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"]) ||  Authentication.create_with_omniauth(auth_hash)
 
@@ -62,7 +61,8 @@ class SessionsController < Clearance::UsersController
       else
         user = User.create_with_auth_and_hash(authentication, auth_hash)
         # you are expected to have a path that leads to a page for editing user details
-        @next = edit_user_path(user)
+        @next = root_url
+        # edit_user_path(user)
         @notice = "User created. Please confirm or edit details"
       end
     end

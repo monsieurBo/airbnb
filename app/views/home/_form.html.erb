@@ -1,0 +1,45 @@
+
+
+<div class="form-row bg-white">
+    <div class="form-group col-md-4">
+      <label for="exampleSelect1">Example select</label>
+      <input class="form-control" id="exampleSelect1">
+    </div>
+
+    <%= form_tag(listings_path, :method => "get", id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search Recipes" %>
+    <%= submit_tag "Search", :name => nil %>
+<% end %>
+
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5"/>
+        </div>
+    </div>
+</div>
+
+    <div class="form-group col-md-2">
+      <label for="exampleSelect1">Example select</label>
+      <input class="form-control datepicker-input" id="datepicker"/>
+    </div>
+
+    <div class="coform-group col-md-2 date">
+      <label for="exampleSelect1">Example select</label>
+      <input class="form-control" id="exampleSelect1">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+        </div>
+    </div>
+
+    <div class="coform-group col-md-4">
+      <label for="exampleSelect1">Example select</label>
+      <select class="form-control" id="exampleSelect1">
+        <% index = 1 %>
+        <% 12.times do %>
+        <option><%= index %></option>
+        <% index += 1 %>
+        <% end %>
+      </select>
+    </div>
+  </div>

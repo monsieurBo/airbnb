@@ -1,0 +1,36 @@
+<%= form_for(@reservation, url: listing_reservations_path(@listing.id)) do |f| %>
+  <% if reservation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+      <ul>
+      <% reservation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.hidden_field :listing_id, value: @listing %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date %>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :end_date %>
+    <%= f.date_select :end_date, class: 'form-control date', id: 'datepicker' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :guest_number %>
+    <%= f.number_field :guest_number %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

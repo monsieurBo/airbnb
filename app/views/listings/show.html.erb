@@ -1,0 +1,109 @@
+<p id="notice"><%= notice %></p>
+<!-- COURESEL -->
+<% if @listing.avatars? %>
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <!-- CAROUSEL INDICATORS -->
+    <ol class="carousel-indicators">
+      <% @listing.avatars.each do |image| %>
+        <li data-target="#myCarousel" data-slide-to="<%= image %>"></li>
+      <% end %>
+    </ol>
+    <!-- CAROUSEL IMAGES -->
+    <div class="carousel-inner">
+      <% @listing.avatars.each do |image| %>
+        <div class="carousel-item <%= 'active' if image == @listing.avatars[0] %>">  <%= image_tag(image.thumb.url, class: 'd-block w-100') %>
+        </div>
+      <% end %>
+    </div>
+    <!-- CAROUSEL LEFT/RIGHT -->
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+<% end %>
+<br/>
+<p>
+  <strong>Name:</strong>
+  <%= @listing.name %>
+</p>
+
+<p>
+  <strong>Place type:</strong>
+  <%= @listing.place_type %>
+</p>
+
+<p>
+  <strong>Property type:</strong>
+  <%= @listing.property_type %>
+</p>
+
+<p>
+  <strong>Room number:</strong>
+  <%= @listing.room_number %>
+</p>
+
+<p>
+  <strong>Bed number:</strong>
+  <%= @listing.bed_number %>
+</p>
+
+<p>
+  <strong>Guest number:</strong>
+  <%= @listing.guest_number %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @listing.country %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @listing.state %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @listing.city %>
+</p>
+
+<p>
+  <strong>Zipcode:</strong>
+  <%= @listing.zipcode %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @listing.address %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @listing.price %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @listing.description %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <% if @listing.avatars? %>
+  <ul>
+    <% @listing.avatars.each do |avatar| %>
+      <li><%= link_to(image_tag(avatar.thumb.url, alt: 'Image'), avatar.url, target: '_blank') %></li>
+    <% end %>
+  </ul>
+<% end %>
+</p>
+
+<%= link_to 'Edit', edit_listing_path(@listing) %> |
+<%= link_to 'Back', listing_path %> |
+<%= link_to 'Book!', new_listing_reservation_path(@listing) %>
+

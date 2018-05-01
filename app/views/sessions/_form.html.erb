@@ -1,21 +1,48 @@
-<%= form_for :session, url: sessions_path do |form| %>
-  <div class="text-field">
-    <%= form.label :email %>
-    <%= form.text_field :email, type: 'email' %>
-  </div>
+<div class="card">
+  <article class="card-body">
 
-  <div class="password-field">
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-  </div>
-
-  <div class="submit-field">
-    <%= form.submit %>
-  </div>
-
-  <div class="other-links">
     <% if Clearance.configuration.allow_sign_up? %>
-      <%= link_to t(".sign_up"), sign_up_path %>
+    <%= link_to t(".sign_up"), sign_up_path, class: "float-right btn btn-outline-primary other-links" %>
     <% end %>
-  </div>
-<% end %>
+
+    <h4 class="card-title mb-4 mt-1">Sign in</h4>
+
+    <p>
+      <%= link_to sign_up_path, class: "btn btn-block btn-outline-info" do%>
+      <%= fa_icon "twitter", text: " Login via Twitter" %>
+      <% end %>
+      <%= link_to sign_up_path, class: "btn btn-block btn-outline-primary" do%>
+      <%= fa_icon "facebook-f", text: " Login via Facebook" %>
+      <% end %>
+      <%= link_to "/auth/google_oauth2", class: "btn btn-block btn-outline-danger" do%>
+      <%= fa_icon "google", text: " Login via Google" %>
+      <% end %>
+    </p>
+
+    <hr>
+
+    <%= form_for :session, url: sessions_path do |form| %>
+
+      <div class="text-field form-group">
+        <%= form.label :email %>
+        <%= form.text_field :email, type: 'email', placeholder: "example@email.com", class: 'form-control' %>
+      </div>
+
+      <div class="password-field form-group">
+        <%= form.label :password %>
+        <%= form.password_field :password, placeholder: "******", class: 'form-control' %>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="submit-field form-group">
+            <%= form.submit 'Sign In', class: 'btn btn-primary btn-block' %>
+          </div>
+        </div>
+        <div class="col-md-6 text-right other-links">
+          <%= link_to t(".forgot_password"), new_password_path, class: 'small' %>
+        </div>                                            
+      </div> <!-- .row// -->       
+    <% end %>
+  </article>
+</div> <!-- card.// -->

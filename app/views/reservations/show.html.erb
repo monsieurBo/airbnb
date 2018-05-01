@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @reservation.user %>
+</p>
+
+<p>
+  <strong>Listing:</strong>
+  <%= @reservation.listing %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @reservation.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @reservation.end_date %>
+</p>
+
+<p>
+  <strong>Nights number:</strong>
+  <%= (@reservation.end_date - @reservation.start_date).to_i %>
+</p>
+
+<p>
+  <strong>Price per night:</strong>
+  <%= (@reservation.listing.price) %>
+</p>
+
+<p>
+  <strong>Total price:</strong>
+  <% @total_price = (@reservation.listing.price)*(@reservation.end_date - @reservation.start_date).to_i %>
+  <%= @total_price %>
+  <%= hidden_field_tag :total_price, value: @total_price %>
+</p>
+
+
+
+<p>
+  <strong>Guest number:</strong>
+  <%= @reservation.guest_number %>
+</p>
+
+
+<p>
+  <strong>Accepted:</strong>
+  <%= @reservation.accepted %>
+</p>
+
+<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
+<%= link_to 'Back', reservations_path %> |
+<%= link_to 'Make Payment', braintree_new_path(@total_price) %>

@@ -21,6 +21,8 @@ gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -42,10 +44,35 @@ gem 'faker'
 gem 'figaro'
 
 # include bootstrap
-gem 'bootstrap'
+gem 'bootstrap', '~> 4.1.0'
 
+#include fontawesome
+gem 'font-awesome-rails'
+
+# Authorisation/google authoration
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
+
+# Tags for listings
+gem 'acts-as-taggable-on', '~> 4.0'
+
+# Pagination for listing
+gem 'kaminari'
+
+# photos uploader
+gem 'carrierwave', '~> 1.0'
+
+gem 'mini_magick'
+
+gem 'fog-aws'
+
+gem 'bootstrap4-datetime-picker-rails'
+
+gem 'pg_search'
+
+gem 'ransack', github: 'activerecord-hackery/ransack'
+
+gem "braintree", "~> 2.88.0"
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
