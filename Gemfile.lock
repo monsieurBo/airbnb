@@ -51,6 +51,8 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     arel (7.1.4)
     autoprefixer-rails (8.4.1)
       execjs
@@ -83,6 +85,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.1)
     crass (1.0.4)
     email_validator (1.6.0)
       activemodel
@@ -141,6 +144,10 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.6.0)
+      launchy (~> 2.2)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -189,8 +196,11 @@ GEM
     polyamorous (1.3.3)
       activerecord (>= 3.0)
     popper_js (1.12.9)
+    public_suffix (3.0.2)
     puma (3.11.4)
     rack (2.0.5)
+    rack-protection (2.0.1)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.7)
@@ -220,6 +230,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    redis (4.0.1)
     sass (3.5.6)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -231,6 +242,11 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sidekiq (5.1.3)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -282,6 +298,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   kaminari
+  letter_opener
   listen (~> 3.0.5)
   mini_magick
   omniauth
@@ -292,6 +309,7 @@ DEPENDENCIES
   rails (~> 5.0.7)
   ransack!
   sass-rails (~> 5.0)
+  sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
   sprockets-rails

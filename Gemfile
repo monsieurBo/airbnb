@@ -74,6 +74,10 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 
 gem "braintree", "~> 2.88.0"
 
+gem "letter_opener", :group => :development
+
+gem 'sidekiq'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

@@ -43,11 +43,11 @@ class ReservationsController < ApplicationController
   # POST /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-    p params
     @reservation.user_id = current_user.id
     @reservation.listing_id = params[:listing_id]
     if date_checker(@reservation.start_date, @reservation.end_date)
       if @reservation.save
+        ReservationMailer.booking_email(current_user,Listing.find(params[:listing_id]),@reservation.id).deliver_now
         redirect_to @reservation , notice: 'Reservation was successfully created.'
       else
         @listing = Listing.find(@reservation.listing_id)
