@@ -3,17 +3,19 @@ class HomeController < ApplicationController
   protect_from_forgery with: :exception
 
   def home
-  	@lists = Listing.page(params[:page])
+    @listings = Listing.select(:verified).page(params[:page])
 
+  	@lists = Listing.order(:verified).page(params[:page])
   end
 
   def search
-  	@listings = Listing.ransack(params[:q]).result(disctint:true)
-  	respond_to do |format| 
-  	    format.html {}
-  	    format.json {
-  	        @listings = @listings.all
+  	@listings = Listing.ransack(params[:q]).result(distinct: true)
+
+    respond_to do |format|
+	    format.json {
+	        @listings = @listings.limit(10)
   	}
+    end
   end
-  end
+
 end

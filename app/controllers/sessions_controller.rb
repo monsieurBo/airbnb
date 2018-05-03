@@ -49,7 +49,7 @@ class SessionsController < Clearance::UsersController
       user = authentication.user
       authentication.update_token(auth_hash)
       @next = root_url
-      @notice = "Signed in!"
+      flash[:success], @notice = "Signed in!"
     # else: user logs in with OAuth for the first time
     else
       user = User.find_by_email(auth_hash["info"].email)
@@ -57,13 +57,13 @@ class SessionsController < Clearance::UsersController
         user.authentications << authentication
         authentication.update_token(auth_hash)
         @next = root_url
-        @notice = "Signed in!"
+        flash[:success], @notice = "Signed in!"
       else
         user = User.create_with_auth_and_hash(authentication, auth_hash)
         # you are expected to have a path that leads to a page for editing user details
         @next = root_url
         # edit_user_path(user)
-        @notice = "User created. Please confirm or edit details"
+        flash[:success], @notice = "User created. Please confirm or edit details"
       end
     end
 

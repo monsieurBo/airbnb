@@ -1,21 +1,19 @@
 Rails.application.routes.draw do
 
   get 'braintree/new'
-
   post 'braintree/checkout', as: "braintree_checkout"
 
   resources :reservations
 
   resources :listings do
     resources :avatars, only: [:create, :destroy]
-    resources :reservations, only: [:new, :create]
+    resources :reservations, only: [:new, :create, :update]
   end
   
   post "/listings/:id" => "listings#verify"
   
 
   resources :passwords, controller: "clearance/passwords", only: [:create, :new]
-
   resource :sessions, controller: "sessions", only: [:create, :destroy] do
   end
 

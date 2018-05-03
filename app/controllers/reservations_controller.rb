@@ -15,7 +15,7 @@ class ReservationsController < ApplicationController
         elsif current_user.superadmin?
           @reservations = Reservation.all
         else
-          flash[:notice] = "Sorry. You are not allowed to perform this action."
+          flash[:error] = "Sorry. You are not allowed to perform this action."
           return redirect_to root_url, notice: "Sorry. You do not have the permissino to view the properties."
         end
       end
@@ -31,12 +31,17 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    @listing = Listing.find(params[:listing_id])
-    @reservation = Reservation.new
+    if allowed(actions: "reservation_create", user: current_user)
+      @reservation = Reservation.new
+      @listing = Listing.find(params[:listing_id])
+    end
   end
 
   # GET /reservations/1/edit
   def edit
+    if allowed(actions: "reservation_edit", user: current_user)
+    @listing = Listing.find(@reservation.listing_id)
+    end
   end
 
   # POST /reservations
@@ -44,11 +49,10 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
     @reservation.user_id = current_user.id
-    @reservation.listing_id = params[:listing_id]
     if date_checker(@reservation.start_date, @reservation.end_date)
       if @reservation.save
-        ReservationMailer.booking_email(current_user,Listing.find(params[:listing_id]),@reservation.id).deliver_now
-        redirect_to @reservation , notice: 'Reservation was successfully created.'
+        ReservationMailer.booking_email(current_user,@reservation.listing.user,@reservation.id).deliver_now
+        redirect_to @reservation , :flash => {:error => 'Reservation was successfully created.'}
       else
         @listing = Listing.find(@reservation.listing_id)
         render :new
@@ -62,7 +66,7 @@ class ReservationsController < ApplicationController
   def update
     respond_to do |format|
       if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
+        format.html { redirect_to @reservation, :flash => {:success => 'Reservation was successfully updated.'} }   
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit }
@@ -74,21 +78,27 @@ class ReservationsController < ApplicationController
   # DELETE /reservations/1
   # DELETE /reservations/1.json
   def destroy
+    if allowed(actions: "reservation_destroy", user: current_user)
     @reservation.destroy
     respond_to do |format|
       format.html { redirect_to reservations_url, notice: 'Reservation was successfully destroyed.' }
       format.json { head :no_content }
     end
+    end
   end
 
   def accept
+    if allowed(actions: "reservation_accept", user: current_user)
     @reservation.update(accepted: true)
     render @show, notice: 'Reservation is accepted'
+    end
   end
 
   def reject
+    if allowed(actions: "reservation_reject", user: current_user)
     @reservation.update(accepted: false)
     render @show, notice: 'Reservation is rejected'
+    end
   end
 
   private
@@ -108,8 +118,8 @@ class ReservationsController < ApplicationController
         @reservations.each do |r|
           # if (start_date >= r.start_date && end_date <= r.end_date) || (start_date < r.end_date && end_date > r.end_date) || (start_date < r.start_date && end_date >= r.start_date)
           if (start_date < r.end_date && end_date > r.start_date)
-             @listing = Listing.find(@reservation.listing_id)
-
+            byebug
+            @listing = Listing.find(@reservation.listing_id)
             flash[:alert] = "Alerting you to the monkey on your car!"
             render :new
             return false

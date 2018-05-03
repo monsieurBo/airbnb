@@ -1,14 +1,17 @@
-<div id="clearance" class="sign-up jumbotron">
-  <div class="container">
-  <h2 class="display-4 text-center">Edit Account</h2>
+<div class="container">
   <br/>
+	<div id="clearance" class="sign-up jumbotron">
+	  <div class="container">
+	  <h2 class="display-4 text-center">Edit Account</h2>
+	  <br/>
 
-  <% if profile_check %>
-    <%= render partial: '/users/form_complete_profile' %>
-  <% else %>
-    <%= render partial: '/users/form_edit' %>
-  <% end %>
+	  <% if profile_check %>
+	    <%= render partial: '/users/form_complete_profile' %>
+	  <% else %>
+	    <%= render partial: '/users/form_edit' %>
+	  <% end %>
 
- 
-  </div>
+	 
+	  </div>
+	</div>
 </div>

@@ -1,4 +1,8 @@
+<div class="container">
+    <br/>
+
 <!-- <div class="container"> -->
+<% if signed_in? %>
 <div class="jumbotron">
   <h1 class="display-4">Hello, <%=current_user.first_name%>!</h1>
   <%= image_tag(current_user.avatar.thumb.url, class: 'rounded-circle') if current_user.avatar? %>
@@ -10,11 +14,13 @@
   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 </div>
 <%= button_to "About us", about_us_path %>
+<% end %>
 <!-- </div> -->
 
 <!-- <div class="container"> -->
   <div class="row">
 		<% @lists.each do |listing| %>
+		<% if listing.verified? %>
     <div class="col-sm">
 			<div class="card" style="width: 18rem;">
 			<%= image_tag(listing.avatars[0].thumb.url) if listing.avatars?%>
@@ -28,7 +34,9 @@
 			</div>
 			<br/>
     </div>
+    <% end %>
  		<% end %>
   </div>
 		<%= paginate @lists, themes: 'bootstrap' %> 
 <!-- </div> -->
+</div>

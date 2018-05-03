@@ -78,6 +78,10 @@ gem "letter_opener", :group => :development
 
 gem 'sidekiq'
 
+gem 'foreman'
+
+gem 'rails_12factor', group: :production
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
