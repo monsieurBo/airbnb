@@ -1,23 +1,37 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
-  get 'braintree/new'
-  post 'braintree/checkout', as: "braintree_checkout"
+  mount Sidekiq::Web => "/sidekiq"
 
-  resources :reservations
+
+  resources :reservations do
+
+    member do 
+      get 'accept'
+      get 'reject'
+    end
+    
+    get 'braintree/new'
+    post 'braintree/checkout', as: "braintree_checkout"
+
+  end
 
   resources :listings do
     resources :avatars, only: [:create, :destroy]
     resources :reservations, only: [:new, :create, :update]
+
+    member do
+      get 'verify'
+    end
+
   end
   
-  post "/listings/:id" => "listings#verify"
-  
-
   resources :passwords, controller: "clearance/passwords", only: [:create, :new]
   resource :sessions, controller: "sessions", only: [:create, :destroy] do
   end
 
-  resources :users, controller: "users", only: [:create, :edit, :update, :destroy] do
+  resources :users, controller: "users", only: [:show, :create, :edit, :update, :destroy] do
     resource :password,
       controller: "clearance/passwords",
       only: [:create, :edit, :update]
@@ -29,10 +43,14 @@ Rails.application.routes.draw do
   # get "/user/:id/edit" => "users#edit", as: "edit_user"
   
   get :search, controller: :home
+  get "search", to: "listings#index"
+
   root "home#home"
   get '/about' => "home#about", as: "about_us"
 
   get "/auth/:provider/callback" => "sessions#create_from_omniauth"
+
+  # resources :search, only: [:edit]
 
   # get "/client_token" do
   #   gateway.client_token.generate

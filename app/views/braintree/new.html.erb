@@ -1,22 +1,77 @@
-<div class="demo-frame">
+    <br/>
+<p id="notice"><%= notice %></p>
 
-	<%= params[:total_price] %>
-  <%= form_for :checkout_form, url: braintree_checkout_path, html: { id: "cardForm"} do |form| %>
-    <%= form.label :card_number, "Credit Card Number", html: {class: "hosted-fields--label"} %>
-    <div id="card-number" class="hosted-field"></div>
+<div class="container bg-white">
+  <div class="row">
+    <div class="col-6 col-md-6"> <!-- col 1 -->
+    <div class="cardForm">
+      <p>
+        <strong>User:</strong>
+        <%= @reservation.user %>
+      </p>
 
-    <%= form.label :expiration_date, "Expiration Date", html: {class: "hosted-fields--label"} %>
-    <div id="expiration-date" class="hosted-field"></div>
+      <p>
+        <strong>Listing:</strong>
+        <%= @reservation.listing %>
+      </p>
 
-    <%= form.label :cvv, "CVV", html: {class: "hosted-fields--label"} %>
-    <div id="cvv" class="hosted-field"></div>
+      <p>
+        <strong>Start date:</strong>
+        <%= @reservation.start_date %>
+      </p>
 
-    <%= form.hidden_field "payment_method_nonce" %>
+      <p>
+        <strong>End date:</strong>
+        <%= @reservation.end_date %>
+      </p>
 
-    <div class="button-container">
-      <%= form.submit "Purchase", disabled: true, class: "btn btn-primary", id: "submit-payment-btn" %>
+      <p>
+        <strong>Nights number:</strong>
+        <%= (@reservation.end_date - @reservation.start_date).to_i %>
+      </p>
+
+      <p>
+        <strong>Price per night:</strong>
+        <%= (@reservation.listing.price) %>
+      </p>
+
+      <p>
+        <strong>Total price:</strong>
+        <% @total_price = (@reservation.listing.price)*(@reservation.end_date - @reservation.start_date).to_i %>
+        <%= @total_price %>
+        <%= hidden_field_tag :total_price, value: @total_price %>
+      </p>
+
+
+
+      <p>
+        <strong>Guest number:</strong>
+        <%= @reservation.guest_number %>
+      </p>
+      </div>
     </div>
-  <% end %>
+
+    <div class="col-6 col-md-6"> <!-- col 2 -->
+      <%= params[:total_price] %>
+      <%= form_for :checkout_form, url: reservation_braintree_checkout_path, html: { id: "cardForm"} do |form| %>
+        <%= form.label :card_number, "Credit Card Number", html: {class: "hosted-fields--label"} %>
+        <div id="card-number" class="hosted-field"></div>
+
+        <%= form.label :expiration_date, "Expiration Date", html: {class: "hosted-fields--label"} %>
+        <div id="expiration-date" class="hosted-field"></div>
+
+        <%= form.label :cvv, "CVV", html: {class: "hosted-fields--label"} %>
+        <div id="cvv" class="hosted-field"></div>
+
+        <%= form.hidden_field "payment_method_nonce" %>
+        <%= form.hidden_field "total_price" %>
+
+        <div class="button-container">
+          <%= form.submit "Purchase", disabled: true, class: "btn btn-primary", id: "submit-payment-btn" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 
@@ -31,7 +86,7 @@
 var form = document.querySelector('#cardForm');
 var submit = document.querySelector("#submit-payment-btn");
 var authorization = '<%= @client_token %>';
-
+var total_price = '<%= @total_price %>';
 braintree.client.create({
   // Replace this with your own authorization.
   authorization: authorization
@@ -89,6 +144,7 @@ braintree.client.create({
         // submit the form. Alternatively, you could send the nonce to your server
         // with AJAX.
         document.querySelector('input[name="checkout_form[payment_method_nonce]"]').value = payload.nonce;
+        document.querySelector('input[name="checkout_form[total_price]"]').value = total_price;
         form.submit();
       });
     }, false);

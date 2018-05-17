@@ -17,15 +17,7 @@
 //= require moment.js
 //= require jquery.easy-autocomplete.min.js
 //= require_tempusdominus-bootstrap-4.js
-//= require search.js
+//= require home.js
 //= require braintree.js
 //= require_tree .
 
-// $('#datepicker').datepicker();
-
-
-$('#datetimepicker5').datetimepicker();
-
-$('#datepicker').datepicker({
-            uiLibrary: 'bootstrap4'
-        });

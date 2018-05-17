@@ -7,7 +7,7 @@
     </div>
 
     <%= form_tag(listings_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Search Recipes" %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search Recipes", id: "city-search" %>
     <%= submit_tag "Search", :name => nil %>
 <% end %>
 

@@ -1,0 +1,11 @@
+<div class="container bg-info">
+	<div class="row">
+  <div class="col-sm-4">
+  <%= image_tag(@user.avatar.large_thumb.url, class: 'rounded-circle') if current_user.avatar? %> 
+  </div>
+  <div class="col-sm-8">
+  <h2> Hey, I'm <%= @user.first_name %>! </h2>
+  <h5><%=@user.country%> Joined in <%=@user.created_at%></h5>
+  </div>
+</div>
+</div>

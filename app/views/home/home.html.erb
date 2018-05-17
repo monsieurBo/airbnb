@@ -1,21 +1,6 @@
+
 <div class="container">
     <br/>
-
-<!-- <div class="container"> -->
-<% if signed_in? %>
-<div class="jumbotron">
-  <h1 class="display-4">Hello, <%=current_user.first_name%>!</h1>
-  <%= image_tag(current_user.avatar.thumb.url, class: 'rounded-circle') if current_user.avatar? %>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-
-  
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-</div>
-<%= button_to "About us", about_us_path %>
-<% end %>
-<!-- </div> -->
 
 <!-- <div class="container"> -->
   <div class="row">
@@ -23,7 +8,11 @@
 		<% if listing.verified? %>
     <div class="col-sm">
 			<div class="card" style="width: 18rem;">
-			<%= image_tag(listing.avatars[0].thumb.url) if listing.avatars?%>
+			<% if listing.avatars? %>
+				<%= image_tag(listing.avatars[0].thumb.url) %>
+				<% else %>
+				<%= image_tag('https://s3-ap-southeast-1.amazonaws.com/pairbnb-bo/photos.png', height:'250px', width:'auto' ) %>
+				<% end %>
 			  <div class="card-body">
 			  	<h6><%= listing.property_type %> | <%= listing.city %></h6>
 			    <h5 class="card-title"><%= listing.name %></h5>

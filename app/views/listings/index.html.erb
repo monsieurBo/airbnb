@@ -1,6 +1,10 @@
-<p id="notice"><%= notice %></p>
 
+<div class="container row">
 <h1>Listings</h1>
+<div class="col-sm-2">
+<a href="#" id="new_link" class="btn btn-danger text-white float_right" data-toggle="modal" data-target="#exampleModalCenter" remote="true">New Listing</a>
+</div>  
+</div>
 
   <% if @listings.blank? %>
   <h4>There is no listing found in <%= params[:search] %>.</h4>
@@ -28,7 +32,7 @@
 
   <tbody>
     <% @listings.each do |listing| %>
-      <tr>
+      <tr id="listing-<%= listing.id %>">
         <td><%= listing.name %></td>
         <td><%= listing.place_type %></td>
         <td><%= listing.property_type %></td>
@@ -48,10 +52,13 @@
         <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
         <% end %>
         <% if !listing.verified && current_user.moderator? %>
-        <td><%= link_to 'Verify', listing, method: :post %></td>
+        <td><%= link_to 'Verify', listing, method: :verify %></td>
+        <% end %>
+        <% if listing.verified && current_user.moderator? %>
+        <td><%= link_to 'Unverify', listing, method: :unverify %></td>
         <% end %>
         <% if (current_user.customer? && current_user.id ==listing.user_id) || current_user.superadmin? %>
-        <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?', remote: true, class: 'delete_listing' } %></td>
         <% end %>
       </tr>
     <% end %>
@@ -61,4 +68,26 @@
 
 <br>
 
-<%= link_to 'New Listing', new_listing_path %>
+<%= link_to 'New Listing', new_listing_path, remote: true  %>
+<div class="container">
+  <div id="property"></div>
+</div>
+<%= params %>
+<div id="name"></div>
+
+ <%# escape_javascript (render partial: 'form') %>
+
+ <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Ask A Question</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="property"></div>
+        </div>
+      </div>
+    </div>

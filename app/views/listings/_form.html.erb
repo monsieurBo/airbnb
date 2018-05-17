@@ -1,119 +1,140 @@
-<%= form_for(listing) do |f| %>
-  <% if listing.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(listing.errors.count, "error") %> prohibited this listing from being saved:</h2>
-
-      <ul>
-      <% listing.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<!-- form for reservation check  -->
+<% if params[:action] == "show" %>
   <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= label_tag :start_date %>
+    <%= date_field_tag(:start_date, Date.today, id: 'sdate', remote: true) %>
+  </div>
+
+  <div class="field form-group">
+    <%= label_tag :end_date %>
+    <%= date_field_tag(:end_date, Date.today, id: 'sdate') %>
   </div>
 
   <div class="field">
-    <%= f.label :place_type %>
-    <%= f.text_field :place_type %>
+    <%= label_tag :guest_number %>
+    <%= number_field_tag @guest_number, '1' %>
   </div>
+<% else %>
+<!-- form for new listing page -->
+  <%= form_for(@listing) do |f| %>
+  <% if @listing.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@listing.errors.count, "error") %> prohibited this @listing from being saved:</h2>
 
-  <div class="field">
-    <%= f.label :property_type %>
-    <%= f.text_field :property_type %>
-  </div>
+        <ul>
+          <% @listing.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div class="field">
-    <%= f.label :room_number %>
-    <%= f.number_field :room_number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :bed_number %>
-    <%= f.number_field :bed_number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :guest_number %>
-    <%= f.number_field :guest_number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :country %>
-    <%= f.text_field :country %>
-  </div>
-
-  <div class="field">
-    <%= f.label :state %>
-    <%= f.text_field :state %>
-  </div>
-
-  <div class="field">
-    <%= f.label :city %>
-    <%= f.text_field :city %>
-  </div>
-
-  <div class="field">
-    <%= f.label :zipcode %>
-    <%= f.text_field :zipcode %>
-  </div>
-
-  <div class="field">
-    <%= f.label :address %>
-    <%= f.text_field :address %>
-  </div>
-
-  <div class="field">
-    <%= f.label :price %>
-    <%= f.number_field :price %>
-  </div>
-
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_field :description %>
-  </div>
-
-  <div class="field">
-    <%= f.hidden_field :user_id, value: current_user.id %>
-  </div>
-
-  <% if !@listing.avatars? %>
     <div class="field">
-      <%= f.label :avatars %>
-      <%= f.file_field :avatars, multiple: true %>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= f.label :place_type %>
+      <%= f.text_field :place_type %>
+    </div>
+
+    <div class="field">
+      <%= f.label :property_type %>
+      <%= f.text_field :property_type %>
+    </div>
+
+    <div class="field">
+      <%= f.label :room_number %>
+      <%= f.number_field :room_number %>
+    </div>
+
+    <div class="field">
+      <%= f.label :bed_number %>
+      <%= f.number_field :bed_number %>
+    </div>
+
+    <div class="field">
+      <%= f.label :guest_number %>
+      <%= f.number_field :guest_number %>
+    </div>
+
+    <div class="field">
+      <%= f.label :country %>
+      <%= f.text_field :country %>
+    </div>
+
+    <div class="field">
+      <%= f.label :state %>
+      <%= f.text_field :state %>
+    </div>
+
+    <div class="field">
+      <%= f.label :city %>
+      <%= f.text_field :city %>
+    </div>
+
+    <div class="field">
+      <%= f.label :zipcode %>
+      <%= f.text_field :zipcode %>
+    </div>
+
+    <div class="field">
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </div>
+
+    <div class="field">
+      <%= f.label :price %>
+      <%= f.number_field :price %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+    </div>
+
+    <div class="field">
+      <%= f.hidden_field :user_id, value: current_user.id %>
+    </div>
+
+    <% if !@listing.avatars? %>
+      <div class="field">
+        <%= f.label :avatars %>
+        <%= f.file_field :avatars, multiple: true %>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit %>
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+  <% if params[:action] == "edit" %>
+    <% if @listing.avatars? %>
+      <%= form_for @listing, url: listing_avatars_path(@listing), method: :post do |f| %>
+        <% if @listing.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@listing.errors.count, "error") %> prohibited this @listing from being saved:</h2>
 
-<% if @listing.avatars? %>
-<%= form_for @listing, url: listing_avatars_path(@listing), method: :post do |f| %>
-  <% if listing.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(listing.errors.count, "error") %> prohibited this listing from being saved:</h2>
+            <ul>
+            <% @listing.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
 
-      <ul>
-      <% listing.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <div class="field">
+          <%= f.label :avatars %>
+          <%= f.file_field :avatars, multiple: true %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Add More Images" %>
+        </div>
+
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :avatars %>
-    <%= f.file_field :avatars, multiple: true %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Add More Images" %>
-  </div>
-
-  <% end %>
-  <% end %>
+    <% end %>
+  <%end%>
+<% end %>

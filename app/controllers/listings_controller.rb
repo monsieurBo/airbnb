@@ -1,10 +1,11 @@
 class ListingsController < ApplicationController
-  before_action :set_listing, only: [:show, :edit, :update, :destroy, :verify]
+  before_action :set_listing, only: [:show, :edit, :update, :destroy, :verify, :unverify]
 
   # GET /listings
   # GET /listings.json
   def index
     # @listings = Listing.all
+    @listing = Listing.new
     if signed_in?
       if params[:search]
         @listings = Listing.search(params[:search]).order("created_at DESC")
@@ -50,7 +51,7 @@ class ListingsController < ApplicationController
     respond_to do |format|
       if @listing.save
         current_user.listings << @listing
-        format.html { redirect_to @listing, notice: 'Listing was successfully created.' }
+        format.html { redirect_to @listing, :flash => { :success => 'Listing was successfully created.' } }
         format.json { render :show, status: :created, location: @listing }
       else
         format.html { render :new }
@@ -64,7 +65,7 @@ class ListingsController < ApplicationController
   def update
     respond_to do |format|
       if @listing.update(listing_params)
-        format.html { redirect_to @listing, notice: 'Listing was successfully updated.' }
+        format.html { redirect_to @listing, :flash => { :success => 'Listing was successfully updated.' } }
         format.json { render :show, status: :ok, location: @listing }
       else
         format.html { render :edit }
@@ -76,23 +77,32 @@ class ListingsController < ApplicationController
   # DELETE /listings/1
   # DELETE /listings/1.json
   def destroy
-    if allowed?(action: "listing_destroy", user: @listing.user_id)
+    # if allowed?(action: "listing_destroy", user: @listing.user)
       @listing.destroy
       respond_to do |format|
-        format.html { redirect_to listings_url, notice: 'Listing was successfully destroyed.' }
-        format.json { head :no_content }
+        format.js 
+        format.html { redirect_to listings_url, :flash => { :success => 'Listing was successfully destroyed.' } }
+        # format.json { head :no_content }
       end
-    end
+    # end
   end
 
   # POST /listings/1
   # POST /listings/1.json
   def verify
     if allowed?(action: "listing_verify", user: @listing.user_id)
-    @listing.update(verified: true)
-      respond_to do |format|
-        format.html { redirect_to listings_url, notice: 'Listing was successfully verified.' }
-        format.json { render :show, status: :ok, location: @listing }
+      if @listing.verified?
+        @listing.update(verified: false)
+          respond_to do |format|
+            format.html { redirect_to listings_url, :flash => { :success => 'Listing was successfully unverified.'}  }
+            format.json { render :show, status: :ok, location: @listing }
+          end
+      else
+        @listing.update(verified: true)
+          respond_to do |format|
+            format.html { redirect_to listings_url, :flash => { :success => 'Listing was successfully verified.'}  }
+            format.json { render :show, status: :ok, location: @listing }
+          end
       end
     end
   end

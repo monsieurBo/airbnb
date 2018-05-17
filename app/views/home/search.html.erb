@@ -1,0 +1,92 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container row">
+<h1>Listings</h1>
+<div class="col-sm-2">
+<a href="#" id="new_link" class="btn btn-danger text-white float_right" data-toggle="modal" data-target="#exampleModalCenter" remote="true">New Listing</a>
+</div>  
+</div>
+
+  <% if @listings.blank? %>
+  <h4>There is no listing found in <%= params[:search] %>.</h4>
+  <% else %>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Place type</th>
+      <th scope="col">Property type</th>
+      <th scope="col">Room number</th>
+      <th scope="col">Bed number</th>
+      <th scope="col">Guest number</th>
+      <th scope="col">Country</th>
+      <th scope="col">State</th>
+      <th scope="col">City</th>
+      <th scope="col">Zipcode</th>
+      <th scope="col">Address</th>
+      <th scope="col">Price</th>
+      <th scope="col">Description</th>
+      <th scope="col">User</th>
+      <th  scope="col" colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @listings.each do |listing| %>
+      <tr id="listing-<%= listing.id %>">
+        <td><%= listing.name %></td>
+        <td><%= listing.place_type %></td>
+        <td><%= listing.property_type %></td>
+        <td><%= listing.room_number %></td>
+        <td><%= listing.bed_number %></td>
+        <td><%= listing.guest_number %></td>
+        <td><%= listing.country %></td>
+        <td><%= listing.state %></td>
+        <td><%= listing.city %></td>
+        <td><%= listing.zipcode %></td>
+        <td><%= listing.address %></td>
+        <td><%= listing.price %></td>
+        <td><%= listing.description %></td>
+        <td><%= listing.verified %></td>
+        <td><%= link_to 'Show', listing %></td>
+        <% if listing.user_id == current_user.id %>
+        <td><%= link_to 'Edit', edit_listing_path(listing) %></td>
+        <% end %>
+        <% if !listing.verified && current_user.moderator? %>
+        <td><%= link_to 'Verify', listing, method: :verify %></td>
+        <% end %>
+        <% if listing.verified && current_user.moderator? %>
+        <td><%= link_to 'Unverify', listing, method: :unverify %></td>
+        <% end %>
+        <% if (current_user.customer? && current_user.id ==listing.user_id) || current_user.superadmin? %>
+        <td><%= link_to 'Destroy', listing, method: :delete, data: { confirm: 'Are you sure?', remote: true, class: 'delete_listing' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<br>
+
+<%= link_to 'New Listing', new_listing_path, remote: true  %>
+<div id="property"></div>
+<%= params %>
+<div id="name"></div>
+
+ <%# escape_javascript (render partial: 'form') %>
+
+ <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Ask A Question</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="property"></div>
+        </div>
+      </div>
+    </div>

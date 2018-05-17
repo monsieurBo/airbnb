@@ -7,6 +7,10 @@ class UsersController < Clearance::UsersController
   	@user = User.new
   end
 
+  def show
+    
+  end
+
   def edit
   	@user = current_user
   end
@@ -22,6 +26,21 @@ class UsersController < Clearance::UsersController
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def create
+    @user = user_from_params
+
+    if @user.save
+      sign_in @user
+      if profile_check
+        redirect_back_or url_after_create
+      else
+        redirect_to edit_user_path
+      end
+    else
+      render template: "users/new"
     end
   end
 

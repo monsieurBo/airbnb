@@ -9,12 +9,13 @@ class HomeController < ApplicationController
   end
 
   def search
-  	@listings = Listing.ransack(params[:q]).result(distinct: true)
+  	@lists = Listing.search_country(params[:search])
+    @listings = Listing.search(params[:search])
 
     respond_to do |format|
-	    format.json {
-	        @listings = @listings.limit(10)
-  	}
+      format.html 
+      format.json { render json: @lists }
+      # format.js { render :layout => false  }
     end
   end
 

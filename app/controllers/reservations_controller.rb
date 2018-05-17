@@ -31,7 +31,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/new
   def new
-    if allowed(actions: "reservation_create", user: current_user)
+    if allowed?(action: "reservation_create", user: current_user)
       @reservation = Reservation.new
       @listing = Listing.find(params[:listing_id])
     end
@@ -39,8 +39,8 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1/edit
   def edit
-    if allowed(actions: "reservation_edit", user: current_user)
-    @listing = Listing.find(@reservation.listing_id)
+    if allowed?(action: "reservation_edit", user: current_user)
+      @listing = Listing.find(@reservation.listing_id)
     end
   end
 
@@ -78,7 +78,7 @@ class ReservationsController < ApplicationController
   # DELETE /reservations/1
   # DELETE /reservations/1.json
   def destroy
-    if allowed(actions: "reservation_destroy", user: current_user)
+    if allowed?(action: "reservation_destroy", user: current_user)
     @reservation.destroy
     respond_to do |format|
       format.html { redirect_to reservations_url, notice: 'Reservation was successfully destroyed.' }
@@ -88,16 +88,16 @@ class ReservationsController < ApplicationController
   end
 
   def accept
-    if allowed(actions: "reservation_accept", user: current_user)
-    @reservation.update(accepted: true)
-    render @show, notice: 'Reservation is accepted'
+    if allowed?(action: "reservation_accept", user: @reservation)
+      @reservation.update(accepted: true)
+      render @show, notice: 'Reservation is accepted'
     end
   end
 
   def reject
-    if allowed(actions: "reservation_reject", user: current_user)
-    @reservation.update(accepted: false)
-    render @show, notice: 'Reservation is rejected'
+    if allowed?(action: "reservation_reject", user: @reservation)
+      @reservation.update(accepted: false)
+      render @show, notice: 'Reservation is rejected'
     end
   end
 
@@ -114,11 +114,10 @@ class ReservationsController < ApplicationController
 
     def date_checker(start_date, end_date)
       @reservations = Reservation.where(listing_id: params[:listing_id])
-      if @reservations
+      if !@reservations.nil?
         @reservations.each do |r|
           # if (start_date >= r.start_date && end_date <= r.end_date) || (start_date < r.end_date && end_date > r.end_date) || (start_date < r.start_date && end_date >= r.start_date)
           if (start_date < r.end_date && end_date > r.start_date)
-            byebug
             @listing = Listing.find(@reservation.listing_id)
             flash[:alert] = "Alerting you to the monkey on your car!"
             render :new
